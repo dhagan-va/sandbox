@@ -1,0 +1,15 @@
+[Test]
+public void Test_MemoryAllocations()
+{
+    var snapshotBefore = dotMemory.Check();
+    
+    // Act
+    var sut = new MyComponent();
+    sut.DoWork();
+    
+    // Assert
+    dotMemory.Check(memory =>
+    {
+        Assert.IsTrue(memory.GetObjects(where => where.Type.Is<MyComponent>()).ObjectsCount < 100);
+    });
+}
